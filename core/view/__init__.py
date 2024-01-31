@@ -27,7 +27,7 @@ class Decorator(object):
                 if request.method == "POST":
                     token = request.headers.get("token")
 
-                    if token:
+                    if token and "W5_TOKEN_" in token:
                         from core import redis
 
                         if redis.exists(token) == 0:
@@ -39,7 +39,7 @@ class Decorator(object):
         def after_request(resp):
             response_data = ""
             try:
-                response_data = resp.data
+                response_data = str(resp.data, "utf-8").encode('utf-8').decode("unicode_escape")
             except:
                 pass
 
